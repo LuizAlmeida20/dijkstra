@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "In9Ms50PocVGpnpSqD2GLNLkmJBWA+IFsGgzniN90Bn4b6zDTQBFgvGBZMgdxMtB69StlfcRuclk41zfIj1ruw==",
+  "dgSpecHash": "5TLfueR7bGiFmFuDOZqFcQtm7L7d2QbudHDTS+eD2SGbi294522E9EHDRKU6o3/+UC3LDRGTahvDMZAFv2B/dQ==",
   "success": true,
-  "projectFilePath": "/home/luiz/Projects/ConsoleApp1/ConsoleApp1/ConsoleApp1.csproj",
+  "projectFilePath": "/home/luiz/Study/dijkstra/ConsoleApp1/ConsoleApp1.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Text.Json;
 using ConsoleApp1;
 
 namespace MyFirstApp
 {
-    class Program {
-        static void Main(string[] args) {
+    class Program
+    {
+        static void Main(string[] args)
+        {
             Vertice v0 = new Vertice("S", true);
             Vertice v1 = new Vertice("U", false);
             Vertice v2 = new Vertice("X", false);
@@ -25,20 +28,26 @@ namespace MyFirstApp
                 new Aresta("J", 10, v3, v4)
             ];
 
-            foreach (Aresta aresta in arestas) {
-                if (aresta.GetVerticeOrigemId() == "S") {
+            foreach (Aresta aresta in arestas)
+            {
+                if (aresta.GetVerticeOrigemId() == "S")
+                {
                     v0.AddAresta(aresta);
                 }
-                if (aresta.GetVerticeOrigemId() == "U") {
+                if (aresta.GetVerticeOrigemId() == "U")
+                {
                     v1.AddAresta(aresta);
                 }
-                if (aresta.GetVerticeOrigemId() == "X") {
+                if (aresta.GetVerticeOrigemId() == "X")
+                {
                     v2.AddAresta(aresta);
                 }
-                if (aresta.GetVerticeOrigemId() == "V") {
+                if (aresta.GetVerticeOrigemId() == "V")
+                {
                     v3.AddAresta(aresta);
                 }
-                if (aresta.GetVerticeOrigemId() == "Y") {
+                if (aresta.GetVerticeOrigemId() == "Y")
+                {
                     v4.AddAresta(aresta);
                 }
             }
@@ -49,10 +58,53 @@ namespace MyFirstApp
             grafo.AddVertice(v3);
             grafo.AddVertice(v4);
 
-            foreach (Vertice vertice in grafo.GetVerticesList()) {
+            List<Vertice> verticesDoGrafo = grafo.GetVerticesList();
+            Console.WriteLine("GRAFO = " + JsonSerializer.Serialize(verticesDoGrafo, new JsonSerializerOptions { WriteIndented = true }));
+            Console.WriteLine("GRAFO COUNT = " + verticesDoGrafo.Count);
+            for (int i = 0; i < verticesDoGrafo.Count; i++)
+            {
+                Vertice vertice = verticesDoGrafo[i];
+                if (vertice.GetOrigem())
+                {
+                    vertice.MarcarComoVisitado();
+                    vertice.SetValorAtual(0);
+                    vertice.SetVerticePredecessor(null);
+                    Aresta? arestaComMenorPeso = vertice.BuscarArestaAdjacenteComMenorPeso();
+                    if (arestaComMenorPeso == null) {
+                        break;
+                    }
+                    Vertice verticeDeDestino = arestaComMenorPeso.GetVerticeDestino();
+                    verticeDeDestino.SetVerticePredecessor(vertice);
+                    verticeDeDestino.SetValorAtual(vertice.GetValorAtual() + arestaComMenorPeso.GetPeso());
+                    int indexVerticeDeDestino = verticesDoGrafo.FindIndex(
+                        verticeDoGrafo => verticeDoGrafo.GetVerticeId() == verticeDeDestino.GetVerticeId()
+                    );
+                    verticesDoGrafo.RemoveAt(indexVerticeDeDestino);
+                    verticesDoGrafo.Insert(i+1, verticeDeDestino);
+                    Console.Write("VERTICE DESTINO AFTER ORIGIN :::");
+                    Console.WriteLine(JsonSerializer.Serialize(verticeDeDestino, new JsonSerializerOptions { WriteIndented = true }));
+                    Console.WriteLine(verticeDeDestino.GetValorAtual());
+                    continue;
+                }
                 vertice.MarcarComoVisitado();
-                Vertice verticeComMenorPeso = vertice.BuscarVerticeAdjacenteComMenorPeso();
+                Aresta? arestaMenorPeso = vertice.BuscarArestaAdjacenteComMenorPeso();
+                if (arestaMenorPeso == null) {
+                    break;
+                }
+                Vertice verticeDestino = arestaMenorPeso.GetVerticeDestino();
+                verticeDestino.SetValorAtual(arestaMenorPeso.GetPeso() + vertice.GetValorAtual());
+                verticeDestino.SetVerticePredecessor(vertice);
+                int indexVerticeDestino = verticesDoGrafo.FindIndex(
+                    verticeDoGrafo => verticeDoGrafo.GetVerticeId() == verticeDestino.GetVerticeId()
+                );
+                verticesDoGrafo.RemoveAt(indexVerticeDestino);
+                verticesDoGrafo.Insert(i+1, verticeDestino);
+                Console.Write("VERTICE DESTINO :::");
+                Console.WriteLine(JsonSerializer.Serialize(verticeDestino, new JsonSerializerOptions { WriteIndented = true }));
             }
+
+            Console.Write("GRAFO FINAL ::::");
+            Console.WriteLine(JsonSerializer.Serialize(verticesDoGrafo, new JsonSerializerOptions { WriteIndented = true }));
         }
     }
 }

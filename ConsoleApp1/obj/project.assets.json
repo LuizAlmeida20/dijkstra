@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/luiz/Projects/ConsoleApp1/ConsoleApp1/ConsoleApp1.csproj",
+      "projectUniqueName": "/home/luiz/Study/dijkstra/ConsoleApp1/ConsoleApp1.csproj",
       "projectName": "ConsoleApp1",
-      "projectPath": "/home/luiz/Projects/ConsoleApp1/ConsoleApp1/ConsoleApp1.csproj",
+      "projectPath": "/home/luiz/Study/dijkstra/ConsoleApp1/ConsoleApp1.csproj",
       "packagesPath": "/home/luiz/.nuget/packages/",
-      "outputPath": "/home/luiz/Projects/ConsoleApp1/ConsoleApp1/obj/",
+      "outputPath": "/home/luiz/Study/dijkstra/ConsoleApp1/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/luiz/.nuget/NuGet/NuGet.Config"
@@ -59,7 +59,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/home/luiz/.dotnet/sdk/8.0.401/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/home/luiz/.dotnet/sdk/8.0.404/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
