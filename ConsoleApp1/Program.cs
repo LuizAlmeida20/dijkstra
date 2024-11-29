@@ -8,103 +8,110 @@ namespace MyFirstApp
     {
         static void Main(string[] args)
         {
-            Vertice v0 = new Vertice("S", true);
-            Vertice v1 = new Vertice("U", false);
-            Vertice v2 = new Vertice("X", false);
-            Vertice v3 = new Vertice("V", false);
-            Vertice v4 = new Vertice("Y", false);
+            Vertice S = new Vertice("S", true);
+            Vertice U = new Vertice("U", false);
+            Vertice X = new Vertice("X", false);
+            Vertice V = new Vertice("V", false);
+            Vertice Y = new Vertice("Y", false);
 
             Aresta[] arestas =
             [
-                new Aresta("A", 10, v0, v1),
-                new Aresta("B", 5, v0, v2),
-                new Aresta("C", 2, v2, v3),
-                new Aresta("D", 3, v3, v2),
-                new Aresta("E", 1, v1, v3),
-                new Aresta("F", 9, v2, v3),
-                new Aresta("G", 7, v4, v0),
-                new Aresta("H", 2, v2, v4),
-                new Aresta("I", 4, v4, v3),
-                new Aresta("J", 10, v3, v4)
+                new Aresta("A", 10, S, U),
+                new Aresta("B", 5, S, X),
+                new Aresta("C", 2, X, U),
+                new Aresta("D", 3, V, X),
+                new Aresta("E", 1, U, V),
+                new Aresta("F", 9, X, V),
+                new Aresta("G", 7, Y, S),
+                new Aresta("H", 2, X, Y),
+                new Aresta("I", 4, Y, V),
+                new Aresta("J", 10, V, Y)
             ];
 
             foreach (Aresta aresta in arestas)
             {
                 if (aresta.GetVerticeOrigemId() == "S")
                 {
-                    v0.AddAresta(aresta);
+                    S.AddAresta(aresta);
                 }
                 if (aresta.GetVerticeOrigemId() == "U")
                 {
-                    v1.AddAresta(aresta);
+                    U.AddAresta(aresta);
                 }
                 if (aresta.GetVerticeOrigemId() == "X")
                 {
-                    v2.AddAresta(aresta);
+                    X.AddAresta(aresta);
                 }
                 if (aresta.GetVerticeOrigemId() == "V")
                 {
-                    v3.AddAresta(aresta);
+                    V.AddAresta(aresta);
                 }
                 if (aresta.GetVerticeOrigemId() == "Y")
                 {
-                    v4.AddAresta(aresta);
+                    Y.AddAresta(aresta);
                 }
             }
             Grafo grafo = new Grafo();
-            grafo.AddVertice(v0);
-            grafo.AddVertice(v1);
-            grafo.AddVertice(v2);
-            grafo.AddVertice(v3);
-            grafo.AddVertice(v4);
+            grafo.AddVertice(S);
+            grafo.AddVertice(U);
+            grafo.AddVertice(X);
+            grafo.AddVertice(V);
+            grafo.AddVertice(Y);
 
             List<Vertice> verticesDoGrafo = grafo.GetVerticesList();
-            Console.WriteLine("GRAFO = " + JsonSerializer.Serialize(verticesDoGrafo, new JsonSerializerOptions { WriteIndented = true }));
-            Console.WriteLine("GRAFO COUNT = " + verticesDoGrafo.Count);
             for (int i = 0; i < verticesDoGrafo.Count; i++)
             {
                 Vertice vertice = verticesDoGrafo[i];
-                if (vertice.GetOrigem())
-                {
+                if (vertice.GetOrigem()) {
                     vertice.MarcarComoVisitado();
                     vertice.SetValorAtual(0);
                     vertice.SetVerticePredecessor(null);
-                    Aresta? arestaComMenorPeso = vertice.BuscarArestaAdjacenteComMenorPeso();
-                    if (arestaComMenorPeso == null) {
+                    Vertice? verticeDeDestino = vertice.DefinirProximoVertice();
+                    if (verticeDeDestino == null) {
                         break;
                     }
-                    Vertice verticeDeDestino = arestaComMenorPeso.GetVerticeDestino();
                     verticeDeDestino.SetVerticePredecessor(vertice);
-                    verticeDeDestino.SetValorAtual(vertice.GetValorAtual() + arestaComMenorPeso.GetPeso());
+                    foreach (Aresta aresta in vertice.GetArestas())
+                    {
+                        Vertice verticeAdjascente = aresta.GetVerticeDestino(); 
+                        verticeAdjascente.SetValorAtual(aresta.GetPeso());
+                        verticeAdjascente.SetVerticePredecessor(vertice);
+                    }
                     int indexVerticeDeDestino = verticesDoGrafo.FindIndex(
                         verticeDoGrafo => verticeDoGrafo.GetVerticeId() == verticeDeDestino.GetVerticeId()
                     );
                     verticesDoGrafo.RemoveAt(indexVerticeDeDestino);
                     verticesDoGrafo.Insert(i+1, verticeDeDestino);
-                    Console.Write("VERTICE DESTINO AFTER ORIGIN :::");
-                    Console.WriteLine(JsonSerializer.Serialize(verticeDeDestino, new JsonSerializerOptions { WriteIndented = true }));
-                    Console.WriteLine(verticeDeDestino.GetValorAtual());
+                    Console.WriteLine("INDEX: " + i);
+                    Console.WriteLine(grafo.ToString());
+                    Console.WriteLine("==============================================");
                     continue;
                 }
                 vertice.MarcarComoVisitado();
-                Aresta? arestaMenorPeso = vertice.BuscarArestaAdjacenteComMenorPeso();
-                if (arestaMenorPeso == null) {
+                Vertice? verticeDestino = vertice.DefinirProximoVertice();
+                if (verticeDestino == null) {
                     break;
                 }
-                Vertice verticeDestino = arestaMenorPeso.GetVerticeDestino();
-                verticeDestino.SetValorAtual(arestaMenorPeso.GetPeso() + vertice.GetValorAtual());
+                foreach (Aresta aresta in vertice.GetArestas()) {
+                    int pesoAtualDoVertice = vertice.GetValorAtual();
+                    Vertice verticeAdjascente = aresta.GetVerticeDestino();
+                    if(!verticeAdjascente.GetVisitado()) {
+                        verticeAdjascente.SetValorAtual(aresta.GetPeso() + pesoAtualDoVertice);
+                        verticeAdjascente.SetVerticePredecessor(vertice);
+                    }
+                }
                 verticeDestino.SetVerticePredecessor(vertice);
                 int indexVerticeDestino = verticesDoGrafo.FindIndex(
                     verticeDoGrafo => verticeDoGrafo.GetVerticeId() == verticeDestino.GetVerticeId()
                 );
                 verticesDoGrafo.RemoveAt(indexVerticeDestino);
                 verticesDoGrafo.Insert(i+1, verticeDestino);
-                Console.Write("VERTICE DESTINO :::");
-                Console.WriteLine(JsonSerializer.Serialize(verticeDestino, new JsonSerializerOptions { WriteIndented = true }));
+                Console.WriteLine("INDEX: " + i);
+                Console.WriteLine(grafo.ToString());
+                Console.WriteLine("==============================================");
             }
 
-            Console.Write("GRAFO FINAL ::::");
-            Console.WriteLine(JsonSerializer.Serialize(verticesDoGrafo, new JsonSerializerOptions { WriteIndented = true }));
+            Console.WriteLine(grafo.ToString());
         }
     }
 }

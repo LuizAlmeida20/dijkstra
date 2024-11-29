@@ -8,7 +8,7 @@ public class Vertice
 {
     private string verticeId;
     private Vertice? verticePredecessor;
-    private int? valorAtual; //nullable int
+    private int valorAtual; //nullable int
     private bool visitado;
     private bool origem;
     private List<Aresta> arestasList = new List<Aresta>();
@@ -17,8 +17,7 @@ public class Vertice
     {
         this.verticeId = verticeId;
         this.verticePredecessor = verticePredecessor;
-        this.valorAtual = null;
-        this.valorAtual = null;
+        this.valorAtual = 0;
         this.visitado = false;
         this.origem = origem;
     }
@@ -31,7 +30,7 @@ public class Vertice
     {
         return this.verticePredecessor;
     }
-    public int? GetValorAtual()
+    public int GetValorAtual()
     {
         return this.valorAtual;
     }
@@ -58,7 +57,7 @@ public class Vertice
     {
         this.verticePredecessor = verticePredecessor;
     }
-    public void SetValorAtual(int? valorAtual)
+    public void SetValorAtual(int valorAtual)
     {
         this.valorAtual = valorAtual;
     }
@@ -78,14 +77,43 @@ public class Vertice
         int pesoPrimeiraAresta = this.arestasList[0].GetPeso();
         int menorPeso = pesoPrimeiraAresta;
         Aresta? arestaSelecionado = null;
-        foreach (Aresta aresta in this.arestasList)
-        {
-            if (aresta.GetPeso() <= menorPeso && !aresta.VerificarVerticeDestinoFoiVisitado())
+        foreach (Aresta aresta in this.arestasList) {
+            if (this.ArestaTemMenorPeso(aresta, menorPeso))
             {
                 menorPeso = aresta.GetPeso();
                 arestaSelecionado = aresta;
             }
         }
         return arestaSelecionado;
+    }
+
+    private bool ArestaTemMenorPeso(Aresta aresta, int menorPeso) {
+        return !aresta.VerificarVerticeDestinoFoiVisitado() && aresta.GetPeso() <= menorPeso;
+    }
+
+    public Vertice? DefinirProximoVertice()
+    {
+        List<Aresta> arestasDoVertice = this.arestasList;
+        Vertice proximoVertice = null;
+        int pesoPrimeiraAresta = this.arestasList[0].GetPeso();
+        int menorPeso = pesoPrimeiraAresta;
+        foreach (Aresta aresta in arestasDoVertice) {
+            if (this.VerticeDestinoTemCaminhoMelhor(aresta)) {
+                proximoVertice = aresta.GetVerticeDestino();
+                break;
+            }
+
+            if (this.ArestaTemMenorPeso(aresta, menorPeso)) {
+                proximoVertice = aresta.GetVerticeDestino();
+            }
+        }
+        return proximoVertice;
+    }
+
+    public bool VerticeDestinoTemCaminhoMelhor(Aresta aresta)
+    {
+        Vertice verticeDestino = aresta.GetVerticeDestino();
+        int pesoDaAresta = aresta.GetPeso();
+        return (this.valorAtual + pesoDaAresta) < verticeDestino.GetValorAtual() && !verticeDestino.GetVisitado();
     }
 }
