@@ -94,6 +94,10 @@ public class Vertice
     public Vertice? DefinirProximoVertice()
     {
         List<Aresta> arestasDoVertice = this.arestasList;
+        if (arestasDoVertice.Count == 0)
+        {
+            return null;
+        }
         Vertice proximoVertice = null;
         int pesoPrimeiraAresta = this.arestasList[0].GetPeso();
         int menorPeso = pesoPrimeiraAresta;

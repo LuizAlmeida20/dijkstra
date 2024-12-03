@@ -8,55 +8,58 @@ namespace MyFirstApp
     {
         static void Main(string[] args)
         {
-            Vertice S = new Vertice("S", true);
-            Vertice U = new Vertice("U", false);
-            Vertice X = new Vertice("X", false);
-            Vertice V = new Vertice("V", false);
-            Vertice Y = new Vertice("Y", false);
+            Vertice A = new Vertice("A", true);
+            Vertice B = new Vertice("B", false);
+            Vertice C = new Vertice("C", false);
+            Vertice D = new Vertice("D", false);
+            Vertice E = new Vertice("E", false);
+            Vertice F = new Vertice("F", false);
 
             Aresta[] arestas =
             [
-                new Aresta("A", 10, S, U),
-                new Aresta("B", 5, S, X),
-                new Aresta("C", 2, X, U),
-                new Aresta("D", 3, V, X),
-                new Aresta("E", 1, U, V),
-                new Aresta("F", 9, X, V),
-                new Aresta("G", 7, Y, S),
-                new Aresta("H", 2, X, Y),
-                new Aresta("I", 4, Y, V),
-                new Aresta("J", 10, V, Y)
+                new Aresta("A", 4, A, B),
+                new Aresta("B", 2, A, C),
+                new Aresta("C", 5, B, C),
+                new Aresta("D", 10, B, D),
+                new Aresta("E", 3, C, E),
+                new Aresta("F", 4, E, D),
+                new Aresta("G", 11, D, F),
             ];
 
             foreach (Aresta aresta in arestas)
             {
-                if (aresta.GetVerticeOrigemId() == "S")
+                if (aresta.GetVerticeOrigemId() == "A")
                 {
-                    S.AddAresta(aresta);
+                    A.AddAresta(aresta);
                 }
-                if (aresta.GetVerticeOrigemId() == "U")
+                if (aresta.GetVerticeOrigemId() == "B")
                 {
-                    U.AddAresta(aresta);
+                    B.AddAresta(aresta);
                 }
-                if (aresta.GetVerticeOrigemId() == "X")
+                if (aresta.GetVerticeOrigemId() == "C")
                 {
-                    X.AddAresta(aresta);
+                    C.AddAresta(aresta);
                 }
-                if (aresta.GetVerticeOrigemId() == "V")
+                if (aresta.GetVerticeOrigemId() == "D")
                 {
-                    V.AddAresta(aresta);
+                    D.AddAresta(aresta);
                 }
-                if (aresta.GetVerticeOrigemId() == "Y")
+                if (aresta.GetVerticeOrigemId() == "E")
                 {
-                    Y.AddAresta(aresta);
+                    E.AddAresta(aresta);
+                }
+                if (aresta.GetVerticeOrigemId() == "F")
+                {
+                    F.AddAresta(aresta);
                 }
             }
             Grafo grafo = new Grafo();
-            grafo.AddVertice(S);
-            grafo.AddVertice(U);
-            grafo.AddVertice(X);
-            grafo.AddVertice(V);
-            grafo.AddVertice(Y);
+            grafo.AddVertice(A);
+            grafo.AddVertice(B);
+            grafo.AddVertice(C);
+            grafo.AddVertice(D);
+            grafo.AddVertice(E);
+            grafo.AddVertice(F);
 
             List<Vertice> verticesDoGrafo = grafo.GetVerticesList();
             for (int i = 0; i < verticesDoGrafo.Count; i++)
@@ -82,9 +85,6 @@ namespace MyFirstApp
                     );
                     verticesDoGrafo.RemoveAt(indexVerticeDeDestino);
                     verticesDoGrafo.Insert(i+1, verticeDeDestino);
-                    Console.WriteLine("INDEX: " + i);
-                    Console.WriteLine(grafo.ToString());
-                    Console.WriteLine("==============================================");
                     continue;
                 }
                 vertice.MarcarComoVisitado();
@@ -106,12 +106,12 @@ namespace MyFirstApp
                 );
                 verticesDoGrafo.RemoveAt(indexVerticeDestino);
                 verticesDoGrafo.Insert(i+1, verticeDestino);
-                Console.WriteLine("INDEX: " + i);
-                Console.WriteLine(grafo.ToString());
-                Console.WriteLine("==============================================");
             }
 
             Console.WriteLine(grafo.ToString());
+            // GrafoDTO grafoToJson = new GrafoDTO(grafo.GetVerticesList());
+            // string json = JsonSerializer.Serialize(grafoToJson);
+            // Console.WriteLine(json);
         }
     }
 }
