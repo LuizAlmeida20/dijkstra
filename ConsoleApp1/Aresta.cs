@@ -27,7 +27,7 @@ public class Aresta
     {
         return this.verticeOrigem.GetVerticeId();
     }
-    
+
     public Vertice GetVerticeOrigem()
     {
         return this.verticeOrigem;
@@ -58,7 +58,7 @@ public class Aresta
     {
         return this.verticeDestino.GetVisitado();
     }
-    
-    
+
+
 
 }

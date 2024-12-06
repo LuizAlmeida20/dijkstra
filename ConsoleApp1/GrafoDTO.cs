@@ -12,8 +12,9 @@ public class GrafoDTO
     public GrafoDTO(List<Vertice> verticesList)
     {
         List<VerticeDTO> verticesDto = new List<VerticeDTO>();
-        foreach (Vertice vertice in verticesList) {
-            
+        foreach (Vertice vertice in verticesList)
+        {
+
         }
     }
 }

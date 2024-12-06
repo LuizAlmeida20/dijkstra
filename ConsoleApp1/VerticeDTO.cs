@@ -16,7 +16,8 @@ public class VerticeDTO
         bool visitado,
         bool origem,
         List<Aresta> arestasDaEntidade
-    ) {
+    )
+    {
         this.verticeId = verticeId;
         this.verticePredecessor = verticePredecessor;
         this.valorAtual = valorAtual;

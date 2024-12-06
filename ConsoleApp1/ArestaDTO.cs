@@ -12,7 +12,8 @@ public class ArestaDTO
         int peso,
         Vertice verticeOrigem,
         Vertice verticeDestino
-    ) {
+    )
+    {
         this.arestaId = arestaId;
         this.peso = peso;
         this.verticeOrigem = verticeOrigem;

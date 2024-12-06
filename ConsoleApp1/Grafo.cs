@@ -28,7 +28,7 @@ public class Grafo
                 verticePredecessorId = verticePredecessor.GetVerticeId();
             }
 
-            int? peso = vertice.GetValorAtual(); 
+            int? peso = vertice.GetValorAtual();
             string representacaoVertice = $"Vertice :::::::::::: {verticeId}\n" +
                                           $"Visitado ::::::::::: {visitado}\n" +
                                           $"Vertice predecessor: {verticePredecessorId}\n" +
