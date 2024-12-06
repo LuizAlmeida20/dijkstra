@@ -70,18 +70,22 @@ namespace MyFirstApp
                 if (currentVertice.GetOrigem())
                 {
                     currentVertice.SetValorAtual(0);
-                    handleCurrentVertice(currentVertice);
+                    handleCurrentVertice(currentVertice, grafo);
                     Console.WriteLine(grafo.ToString());
+                    Console.WriteLine("************************");
                     continue;
                 }
-                handleCurrentVertice(currentVertice);
+                handleCurrentVertice(currentVertice, grafo);
                 Console.WriteLine(grafo.ToString());
+                Console.WriteLine("************************");
             }
         }
-        public static void VisitarVerticesAjacentes(Vertice currentVertice)
+        public static void VisitarVerticesAjacentes(Vertice currentVertice, Grafo grafo)
         {
             foreach (Aresta aresta in currentVertice.GetArestas())
             {
+                Console.WriteLine(grafo.ToString());
+                Console.WriteLine("###############################");
                 int pesoAresta = aresta.GetPeso();
                 int possivelNovoValorVerticeDestino = currentVertice.GetValorAtual() + pesoAresta;
                 int valorVerticeDestino = aresta.GetVerticeDestino().GetValorAtual();
@@ -94,14 +98,14 @@ namespace MyFirstApp
             }
         }
 
-        public static void handleCurrentVertice(Vertice currentVertice)
+        public static void handleCurrentVertice(Vertice currentVertice, Grafo grafo)
         {
-            VisitarVerticesAjacentes(currentVertice);
+            VisitarVerticesAjacentes(currentVertice, grafo);
             Queue<Vertice> filaPrioridade = currentVertice.GetFilaDeVerticesToVisit();
             while (filaPrioridade.Count > 0)
             {
                 Vertice verticeDaLista = filaPrioridade.Dequeue();
-                VisitarVerticesAjacentes(verticeDaLista);
+                VisitarVerticesAjacentes(verticeDaLista, grafo);
             }
             currentVertice.MarcarComoVisitado();
         }
